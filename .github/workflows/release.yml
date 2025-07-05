@@ -30,7 +30,7 @@ jobs:
       # 3. 自动创建 Release（关键步骤！）
       - name: 创建 GitHub Release
         id: create-release  # 用于后续步骤引用输出
-        uses: actions/create-release@v2
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
