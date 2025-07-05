@@ -45,8 +45,6 @@ jobs:
           # 自动生成的 token，无需额外配置
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # 动态获取上传 URL（由 GitHub 提供）
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
           # 本地压缩包路径
           asset_path: ./SharpIcoWeb.zip
           # 资产显示名称（用户下载时看到的名字）
