@@ -30,7 +30,7 @@ jobs:
       # 3. 自动创建 Release（关键步骤！）
       - name: 创建 GitHub Release
         id: create-release  # 用于后续步骤引用输出
-        uses: actions/create-release@v1
+        uses: actions/create-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -39,12 +39,19 @@ jobs:
           draft: false
           prerelease: false
 
+      - name: Debug Outputs
+        run: |
+          echo "Release ID: ${{ steps.create-release.outputs.id }}"
+          echo "Upload URL: ${{ steps.create-release.outputs.upload_url }}"
+
       - name: 上传资产
         uses: actions/upload-release-asset@v1  # 官方 action
         env:
           # 自动生成的 token，无需额外配置
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          # 动态获取上传 URL（由 GitHub 提供）
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           # 本地压缩包路径
           asset_path: ./SharpIcoWeb.zip
           # 资产显示名称（用户下载时看到的名字）
