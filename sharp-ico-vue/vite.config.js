@@ -95,12 +95,7 @@ export default defineConfig(({ mode, command }) => {
         output: {
           chunkFileNames: 'assets/js/[name]-[hash].js',
           entryFileNames: 'assets/js/[name]-[hash].js',
-          assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
-          manualChunks: {
-            'element-plus': ['element-plus'],
-            'vue-vendor': ['vue', '@vue/runtime-dom'],
-            'utils': ['axios', '@vueuse/core']
-          }
+          assetFileNames: 'assets/[ext]/[name]-[hash].[ext]'
         }
       },
       chunkSizeWarningLimit: 1000
