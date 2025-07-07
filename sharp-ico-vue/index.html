@@ -34,18 +34,6 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    
-    <!-- 主题颜色 -->
-    <meta name="theme-color" content="#4c84ff" />
-    <meta name="msapplication-TileColor" content="#4c84ff" />
-    <meta name="msapplication-config" content="/browserconfig.xml" />
-    
-    <!-- 安全性 -->
-    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="X-Frame-Options" content="DENY" />
-    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
-    <meta name="referrer" content="strict-origin-when-cross-origin" />
     
     <!-- 预加载和预连接 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -160,19 +148,6 @@
             setTimeout(() => loading.remove(), 300);
           }
         }, 1000); // 最少显示1秒
-      });
-    </script>
-    
-    <!-- 错误处理 -->
-    <script>
-      window.addEventListener('error', (event) => {
-        console.error('Global error:', event.error);
-        // 可以在这里发送错误到监控服务
-      });
-      
-      window.addEventListener('unhandledrejection', (event) => {
-        console.error('Unhandled promise rejection:', event.reason);
-        // 可以在这里发送错误到监控服务
       });
     </script>
   </body>

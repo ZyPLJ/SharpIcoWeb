@@ -7,12 +7,6 @@
           <div class="preview-actions">
             <el-button 
               size="small" 
-              @click="toggleZoom"
-              :icon="isZoomed ? 'ZoomOut' : 'ZoomIn'"
-              circle
-            />
-            <el-button 
-              size="small" 
               @click="downloadOriginal"
               icon="Download"
               circle
@@ -267,6 +261,7 @@ watch(() => props.selectedSizes, () => {
 .image-container.zoomed {
   overflow: auto;
   max-height: 400px;
+  max-width: 60%;
 }
 
 .image-container img {
@@ -347,6 +342,7 @@ watch(() => props.selectedSizes, () => {
 .ico-tips ul {
   margin: 0;
   padding-left: var(--spacing-md);
+  list-style: none;
 }
 
 .ico-tips li {
@@ -398,6 +394,10 @@ watch(() => props.selectedSizes, () => {
   
   .image-container img {
     max-height: 180px;
+  }
+
+  .ico-tips div {
+    display: block;
   }
 }
 </style>

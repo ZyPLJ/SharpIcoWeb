@@ -10,6 +10,7 @@ import {ElMessageBox, ElNotification} from 'element-plus';
 const isDark = useDark()
 const isSystemDarkMode = usePreferredDark()
 const isLoading = ref(true)
+const isDev = import.meta.env.DEV
 
 // 应用初始化
 const initializeApp = async () => {
@@ -138,7 +139,7 @@ onUnmounted(() => {
       </ErrorBoundary>
       
       <!-- 快捷键提示（开发环境） -->
-      <div v-if="import.meta.env.DEV" class="dev-shortcuts">
+      <div v-if="isDev" class="dev-shortcuts">
         <details>
           <summary>快捷键</summary>
           <ul>
@@ -225,7 +226,7 @@ onUnmounted(() => {
   position: fixed;
   bottom: var(--spacing-md);
   left: var(--spacing-md);
-  z-index: var(--z-index-tooltip);
+  z-index: 99;
   background: var(--background-overlay);
   backdrop-filter: var(--blur-background);
   border-radius: var(--border-radius);

@@ -93,7 +93,7 @@
                       inactive-text="合并生成"
                   />
                   <el-tooltip
-                    content="分别生成：每个尺寸单独生成ICO文件并打包；合并生成：所有尺寸合并到一个ICO文件"
+                    content="合并生成：所有尺寸合并到一个ICO文件；分别生成：每个尺寸单独生成ICO文件并打包"
                     placement="top"
                   >
                     <el-icon class="info-icon"><QuestionFilled /></el-icon>
@@ -106,7 +106,7 @@
                     <el-form-item label="输出质量">
                       <el-slider
                         v-model="outputQuality"
-                        :min="50"
+                        :min="0"
                         :max="100"
                         show-stops
                         :marks="qualityMarks"
@@ -210,11 +210,16 @@
     </ErrorBoundary>
 
     <!-- GitHub 角标 -->
-    <a href="https://github.com/ZyPLJ/SharpIcoWeb" target="_blank" aria-label="View source on Github" class="github-corner">
-      <svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true">
-        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z" :fill="githubColor"></path>
-        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" class="octo-arm"></path>
-        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+    <a href="https://github.com/ZyPLJ/SharpIcoWeb" target="_blank" aria-label="View source on Github"
+       class="github-corner">
+      <svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true" style="fill: #151513; color: #fff;">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path
+            d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+            fill="currentColor" class="octo-arm" style="transform-origin: 130px 106px;"></path>
+        <path
+            d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+            fill="currentColor" class="octo-body"></path>
       </svg>
     </a>
 
@@ -232,7 +237,6 @@
 import { computed, onMounted, ref, reactive, watch } from 'vue';
 import { Download, RefreshRight, Upload, QuestionFilled } from '@element-plus/icons-vue';
 import { dowloadFile, getImageInfo, uploadFile, uploadFileZip } from '@/http/modules/fileUpload';
-import { useDark } from '@vueuse/core';
 
 // 导入新组件
 import ErrorBoundary from './ErrorBoundary.vue';
@@ -271,15 +275,10 @@ const conversionStats = reactive({
   today: parseInt(localStorage.getItem(`conversion_today_${new Date().toDateString()}`) || '0')
 });
 
-// 主题相关
-const isDark = useDark();
-const githubColor = computed(() => isDark.value ? '#f0f6fc' : '#24292f');
-
 // 质量标记
-const qualityMarks = ref({
-  50: '一般',
-  75: '良好', 
-  90: '高质量',
+const qualityMarks = reactive({
+  0: '最差',
+  50: '良好', 
   100: '最佳'
 });
 
@@ -430,7 +429,7 @@ const processSingleSize = async () => {
   }
 
   const path = response.data;
-  await updateIcoInfo(path);
+  await getIcoInfo(path);
   
   loadingText.value = '正在准备下载...';
   const res = await dowloadFile(path);
@@ -464,7 +463,8 @@ const processMultiSize = async () => {
   };
 };
 
-const updateIcoInfo = async (fileName) => {
+// 获取ICO信息
+const getIcoInfo = async (fileName) => {
   try {
     const res = await getImageInfo(fileName);
     if (res) {
@@ -694,6 +694,12 @@ watch(selectedSizes, (newSizes) => {
   margin-top: var(--spacing-md);
 }
 
+:deep(.el-slider) {
+  margin-top: 0;
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
 .action-section {
   display: flex;
   flex-direction: column;
@@ -766,33 +772,28 @@ watch(selectedSizes, (newSizes) => {
   color: var(--border-color);
 }
 
+
 .github-corner {
   position: fixed;
   top: 0;
-  right: 0;
+  left: 0;
   border: 0;
-  z-index: var(--z-index-tooltip);
-  color: var(--background-light);
+  transform: scaleX(-1); /* 翻转标志使其面向右侧 */
+  z-index: 1000;
+}
+
+.github-corner svg {
+  fill: var(--primary-color);
+  color: white;
   transition: var(--transition);
+}
+
+.github-corner:hover svg {
+  fill: var(--primary-dark);
 }
 
 .github-corner:hover .octo-arm {
   animation: octocat-wave 560ms ease-in-out;
-}
-
-@keyframes bounce {
-  0%, 20%, 53%, 80%, 100% { 
-    transform: translate3d(0, 0, 0); 
-  }
-  40%, 43% { 
-    transform: translate3d(0, -10px, 0); 
-  }
-  70% { 
-    transform: translate3d(0, -5px, 0); 
-  }
-  90% { 
-    transform: translate3d(0, -2px, 0); 
-  }
 }
 
 @keyframes octocat-wave {
@@ -809,7 +810,7 @@ watch(selectedSizes, (newSizes) => {
   }
 
   .content {
-    padding: var(--spacing-lg);
+    padding: 0;
   }
 
   .header {
@@ -848,10 +849,6 @@ watch(selectedSizes, (newSizes) => {
     text-align: center;
   }
 
-  .github-corner {
-    display: none;
-  }
-
   .footer-content {
     padding: 0 var(--spacing-md);
   }
@@ -864,16 +861,17 @@ watch(selectedSizes, (newSizes) => {
   .divider {
     display: none;
   }
-}
-
-@media (max-width: 480px) {
-  .feature-badges {
-    flex-direction: column;
-    align-items: center;
-  }
   
-  .help-card :deep(.el-steps) {
-    flex-direction: column;
+  :deep(.el-button-group) {
+    display: flex;
+  }
+
+  .help-card {
+    display: none;
+  }
+
+  .el-button+.el-button {
+    margin-left:0;
   }
 }
 </style>

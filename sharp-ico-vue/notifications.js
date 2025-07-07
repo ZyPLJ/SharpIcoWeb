@@ -1,5 +1,5 @@
 // notifications.js
-export const VERSION = '1.3.1'
+export const VERSION =  import.meta.env.VITE_APP_VERSION;
 
 export const notifications = {
     welcome: {

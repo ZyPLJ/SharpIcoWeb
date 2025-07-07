@@ -273,6 +273,10 @@ const formatBytes = (bytes) => {
   .ico-info-section {
     margin: 20px 0;
   }
+  
+  .info-header span {
+    font-size: 12px;
+  }
 }
 
 @media (max-width: 480px) {
