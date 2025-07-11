@@ -147,10 +147,6 @@
                 <el-icon><RefreshRight/></el-icon>
                 重置
               </el-button>
-              <el-button :dark="isDark" color="#626aef" size="large" plain @click="showPreview = true">
-                <el-icon><StarFilled /></el-icon>
-                爱发电
-              </el-button>
             </div>
             
             <!-- 转换统计 -->
@@ -209,15 +205,11 @@
               湘ICP备2024053728号
             </a>
           </div>
+          <p>
+            <a href="https://afdian.com/a/pljzy" target="_blank" rel="noopener noreferrer">❤ 爱发电 | 赞助作者「ICO图标转换」</a>
+          </p>
         </div>
       </footer>
-      <el-image-viewer
-          v-if="showPreview"
-          ref="imageRef"
-          :url-list="srcList"
-          show-progress
-          @close="showPreview = false"
-      />
     </ErrorBoundary>
 
     <!-- GitHub 角标 -->
@@ -250,7 +242,6 @@
 import { computed, onMounted, ref, reactive, watch } from 'vue';
 import { Download, RefreshRight, Upload, QuestionFilled, StarFilled } from '@element-plus/icons-vue';
 import { dowloadFile, getImageInfo, uploadFile, uploadFileZip } from '@/http/modules/fileUpload';
-import { useDark } from '@vueuse/core'
 
 // 导入新组件
 import ErrorBoundary from './ErrorBoundary.vue';
@@ -272,12 +263,6 @@ const isConverting = ref(false);
 const loadingText = ref('');
 const conversionProgress = ref(0);
 const showProgress = ref(false);
-const isDark = useDark();
-const imageRef = ref();
-const showPreview = ref(false);
-const srcList = [
-  '../../afdian-zy.jpg'
-]
 
 // 环境变量
 const maxFileSize = ref(import.meta.env.VITE_MAX_FILE_SIZE || 10);
