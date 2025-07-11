@@ -128,9 +128,6 @@ onUnmounted(() => {
     
     <!-- 主应用 -->
     <template v-else>
-      <!-- 主题切换按钮 -->
-      <ThemeToggle />
-      
       <!-- 主要内容 -->
       <ErrorBoundary @error="handleGlobalError">
         <main class="main-content">
@@ -310,7 +307,7 @@ onUnmounted(() => {
 }
 
 /* 高对比度模式 */
-@media (prefers-contrast: high) {
+@media (prefers-contrast: custom) {
   .app-container {
     --primary-color: #0066cc;
     --text-primary: #000000;
