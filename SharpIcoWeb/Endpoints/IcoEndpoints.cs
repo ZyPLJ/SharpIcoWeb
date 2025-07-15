@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using SharpIco;
+using SharpIcoWeb.Endpoints.Internal;
 using SharpIcoWeb.Model;
 using SharpIcoWeb.Services;
 
-namespace SharpIcoWeb;
+namespace SharpIcoWeb.Endpoints;
 
-public static class IcoEndpoints
+public class IcoEndpoints: IEndpoint
 {
-    public static void MapIcoEndpoints(this WebApplication app)
+    public static void MapEndpoints(IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/api");
 

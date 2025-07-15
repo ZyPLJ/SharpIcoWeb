@@ -1,4 +1,4 @@
-using SharpIcoWeb;
+using SharpIcoWeb.Endpoints.Internal;
 using SharpIcoWeb.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +9,6 @@ builder.Services.AddOpenApi();
 builder.WebHost.UseUrls("http://*:5235");
 
 builder.Services.AddScoped<IFileService, FileService>();
-
 
 builder.Services.AddCors(options =>
 {
@@ -23,7 +22,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseStaticFiles(); 
+app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -36,7 +35,6 @@ app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 
 // 注册端点
-app.MapIcoEndpoints();
+app.MapAllEndpoints();
 
 app.Run();
-
