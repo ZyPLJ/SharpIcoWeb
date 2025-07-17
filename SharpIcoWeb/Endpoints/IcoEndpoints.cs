@@ -8,7 +8,7 @@ namespace SharpIcoWeb.Endpoints;
 
 public class IcoEndpoints: IEndpoint
 {
-    public static void MapEndpoints(IEndpointRouteBuilder app)
+    public static void UseEndpoints(IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/api");
 
@@ -25,6 +25,11 @@ public class IcoEndpoints: IEndpoint
         // 上传图片文件并返回文件名和不同尺寸的ICO文件的ZIP文件
         group.MapPost("/uploadDownload/sizes", UploadDownloadSizes)
             .DisableAntiforgery();
+    }
+
+    public static void AddServices(IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddScoped<IFileService, FileService>();
     }
 
     private static async Task<IResult> UploadDownload(

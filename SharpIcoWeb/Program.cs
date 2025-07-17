@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.WebHost.UseUrls("http://*:5235");
 
-builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddEndpoints<Program>(builder.Configuration);
 
 builder.Services.AddCors(options =>
 {
@@ -35,6 +35,6 @@ app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 
 // 注册端点
-app.MapAllEndpoints();
+app.UseEndpoints<Program>();
 
 app.Run();
