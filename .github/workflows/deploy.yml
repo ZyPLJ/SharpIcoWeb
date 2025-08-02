@@ -42,7 +42,6 @@ jobs:
         cp -r SharpIco temp_deploy/ 2>/dev/null || true
         cp compose.yaml temp_deploy/ 2>/dev/null || true
         cp .dockerignore temp_deploy/ 2>/dev/null || true
-        cp *.sln temp_deploy/ 2>/dev/null || true
         
         # 排除构建文件
         rm -rf temp_deploy/sharp-ico-vue/node_modules 2>/dev/null || true
