@@ -33,18 +33,31 @@ jobs:
         
     - name: Create deployment package
       run: |
-        # 创建部署包，排除构建文件
-        tar --exclude='sharp-ico-vue/node_modules' \
-            --exclude='sharp-ico-vue/dist' \
-            --exclude='SharpIcoWeb/bin' \
-            --exclude='SharpIcoWeb/obj' \
-            --exclude='SharpIco/bin' \
-            --exclude='SharpIco/obj' \
-            --exclude='.git' \
-            --exclude='.github' \
-            --exclude='*.zip' \
-            --exclude='*.tar.gz' \
-            -czf deployment.tar.gz .
+        # 创建临时目录用于打包
+        mkdir -p temp_deploy
+        
+        # 复制需要的文件到临时目录
+        cp -r sharp-ico-vue temp_deploy/ 2>/dev/null || true
+        cp -r SharpIcoWeb temp_deploy/ 2>/dev/null || true
+        cp -r SharpIco temp_deploy/ 2>/dev/null || true
+        cp compose.yaml temp_deploy/ 2>/dev/null || true
+        cp .dockerignore temp_deploy/ 2>/dev/null || true
+        
+        # 排除构建文件
+        rm -rf temp_deploy/sharp-ico-vue/node_modules 2>/dev/null || true
+        rm -rf temp_deploy/sharp-ico-vue/dist 2>/dev/null || true
+        rm -rf temp_deploy/SharpIcoWeb/bin 2>/dev/null || true
+        rm -rf temp_deploy/SharpIcoWeb/obj 2>/dev/null || true
+        rm -rf temp_deploy/SharpIco/bin 2>/dev/null || true
+        rm -rf temp_deploy/SharpIco/obj 2>/dev/null || true
+        
+        # 创建部署包
+        cd temp_deploy
+        tar -czf ../deployment.tar.gz .
+        cd ..
+        
+        # 清理临时目录
+        rm -rf temp_deploy
             
     - name: Upload files to server
       run: |
