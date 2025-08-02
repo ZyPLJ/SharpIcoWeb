@@ -52,16 +52,6 @@ jobs:
         rm -rf temp_deploy/SharpIco/bin 2>/dev/null || true
         rm -rf temp_deploy/SharpIco/obj 2>/dev/null || true
         
-        # 修复文件格式
-        echo "修复文件格式..."
-        if [ -f "temp_deploy/sharp-ico-vue/default.conf" ]; then
-          # 移除BOM标记和多余空格
-          sed -i '1s/^[[:space:]]*//' temp_deploy/sharp-ico-vue/default.conf
-          # 确保使用Unix换行符
-          dos2unix temp_deploy/sharp-ico-vue/default.conf 2>/dev/null || true
-          echo "default.conf 文件格式已修复"
-        fi
-        
         # 创建部署包
         cd temp_deploy
         tar -czf ../deployment.tar.gz .
@@ -89,16 +79,7 @@ jobs:
           # 解压新的部署包
           echo "解压新的部署包..."
           tar -xzf deployment.tar.gz -C .
-          
-          # 修复文件格式问题
-          echo "修复文件格式..."
-          if [ -f "sharp-ico-vue/default.conf" ]; then
-            # 移除BOM标记和多余空格
-            sed -i '1s/^[[:space:]]*//' sharp-ico-vue/default.conf
-            # 确保使用Unix换行符
-            dos2unix sharp-ico-vue/default.conf 2>/dev/null || true
-            echo "default.conf 文件格式已修复"
-          fi
+      
           
           # 构建并启动新容器
           echo "构建并启动容器..."
