@@ -66,7 +66,7 @@ jobs:
     - name: Deploy on server
       run: |
         ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} << 'EOF'
-          cd /www/wwwroot/default/sharp-ico
+          cd /www/wwwroot/default/sharp-ico/SharpIcoWeb
           
           # 解压新的部署包
           tar -xzf deployment.tar.gz -C .
