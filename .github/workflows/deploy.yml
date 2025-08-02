@@ -61,7 +61,7 @@ jobs:
             
     - name: Upload files to server
       run: |
-        scp deployment.tar.gz ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:/www/wwwroot/default/sharp-ico/
+        scp deployment.tar.gz ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:/www/wwwroot/default/sharp-ico/SharpIcoWeb
         
     - name: Deploy on server
       run: |

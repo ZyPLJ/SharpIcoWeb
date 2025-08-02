@@ -208,6 +208,9 @@
           <p>
             <a href="https://afdian.com/a/pljzy" target="_blank" rel="noopener noreferrer">❤ 爱发电 | 赞助作者「ICO图标转换」</a>
           </p>
+          <p>
+            作者网站：<a href="https://blog.pljzy.top" target="_blank" rel="noopener noreferrer">ZYBLog</a>
+          </p>
         </div>
       </footer>
     </ErrorBoundary>
