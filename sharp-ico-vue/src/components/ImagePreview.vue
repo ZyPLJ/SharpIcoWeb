@@ -3,7 +3,7 @@
     <transition name="fade">
       <div class="preview-container">
         <div class="preview-header">
-          <h3>预览</h3>
+          <h3>{{ t('preview.title') }}</h3>
           <div class="preview-actions">
             <el-button 
               size="small" 
@@ -18,12 +18,12 @@
           <div class="original-preview">
             <h4>
               <el-icon><PictureRounded /></el-icon>
-              原始图片
+              {{ t('preview.original') }}
             </h4>
             <div class="image-container" :class="{ 'zoomed': isZoomed }">
               <img 
                 :src="imageUrl" 
-                alt="原始图片"
+                :alt="t('preview.original')"
                 @load="onImageLoad"
                 @error="onImageError"
                 :style="imageStyle"
@@ -40,7 +40,7 @@
           <div class="ico-preview">
             <h4>
               <el-icon><Grid /></el-icon>
-              ICO预览 ({{ previewSizes.length }} 个尺寸)
+              {{ t('preview.icoTitle', { count: previewSizes.length }) }}
             </h4>
             <div class="ico-sizes">
               <div 
@@ -53,27 +53,27 @@
                 <img 
                   :src="imageUrl" 
                   :style="`width: ${Math.min(size, 64)}px; height: ${Math.min(size, 64)}px`"
-                  :alt="`${size}x${size} 预览`"
+                  :alt="t('preview.sizeAlt', { size })"
                 />
                 <span>{{ size }}×{{ size }}</span>
                 <div class="size-indicator" v-if="size >= 256">
-                  <el-tag size="small" type="warning">高清</el-tag>
+                  <el-tag size="small" type="warning">{{ t('preview.hd') }}</el-tag>
                 </div>
               </div>
             </div>
             
             <div class="ico-tips">
               <el-alert
-                title="提示"
+                :title="t('preview.tipsTitle')"
                 type="info"
                 :closable="false"
                 show-icon
               >
                 <template #default>
                   <ul>
-                    <li>推荐包含 32×32、48×48 用于系统图标</li>
-                    <li>16×16 适用于浏览器标签页</li>
-                    <li>256×256 及以上提供高清显示</li>
+                    <li>{{ t('preview.tips1') }}</li>
+                    <li>{{ t('preview.tips2') }}</li>
+                    <li>{{ t('preview.tips3') }}</li>
                   </ul>
                 </template>
               </el-alert>
@@ -87,6 +87,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { PictureRounded, Grid, ZoomIn, ZoomOut, Download } from '@element-plus/icons-vue'
 
 const props = defineProps({
@@ -103,6 +104,7 @@ const emit = defineEmits(['size-selected'])
 const isZoomed = ref(false)
 const selectedSize = ref(null)
 const imageInfo = ref(null)
+const { t } = useI18n()
 
 const previewSizes = computed(() => {
   // 过滤掉过大的尺寸以便预览
@@ -134,7 +136,7 @@ const onImageLoad = (event) => {
 }
 
 const onImageError = () => {
-  ElMessage.error('图片加载失败')
+  ElMessage.error(t('preview.loadFail'))
 }
 
 const toggleZoom = () => {

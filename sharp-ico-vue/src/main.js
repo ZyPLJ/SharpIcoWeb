@@ -10,6 +10,9 @@ import 'element-plus/theme-chalk/dark/css-vars.css';
 
 const app = createApp(App)
 
+// i18n
+import i18n from './i18n/index.js'
+
 // 全局错误处理
 app.config.errorHandler = (err, vm, info) => {
   console.error('Global error:', err)
@@ -38,4 +41,5 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 
+app.use(i18n)
 app.mount('#app')
