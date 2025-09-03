@@ -168,7 +168,7 @@ const messages = {
     },
     sizeDesc: { 16: 'Browser tab', 24: 'Small icon', 32: 'Standard', 48: 'Large icon', 64: 'HD small', 128: 'HD icon', 256: 'Ultra HD', 512: 'Extreme HD', 1024: 'Retina' },
     messages: { recommend: 'Based on image size ({width}×{height}), recommended ICO sizes applied', selectAtLeastOne: 'Select at least one ICO size', pleaseUploadAndChoose: 'Please upload an image and select sizes', uploading: 'Uploading image...', converting: 'Converting ICO...', preparing: 'Preparing download...', convertSuccess: 'Converted successfully!', invalidType: 'Invalid file type', uploadTypeError: 'Please upload image files of {types} types!', sizeTooLarge: 'Image size must be less than {size}MB!', newVersion: 'New version detected. Reload now?', tip: 'Notice', later: 'Later' },
-    lang: { zh: '中文', en: 'English', ja: '日本語' }
+    lang: { zh: 'Chinese', en: 'English', ja: 'Japanese' }
   },
   ja: {
     app: { name: 'Sharp ICO', loading: 'アプリを読み込み中...' },
@@ -208,7 +208,7 @@ const messages = {
     },
     sizeDesc: { 16: 'ブラウザタブ', 24: '小アイコン', 32: '標準', 48: '大アイコン', 64: 'HD小', 128: 'HDアイコン', 256: '超高精細', 512: '極高精細', 1024: 'Retina' },
     messages: { recommend: '画像サイズ({width}×{height})に基づき、適切なICOサイズを推奨しました', selectAtLeastOne: '少なくとも1つのICOサイズを選択してください', pleaseUploadAndChoose: 'まず画像をアップロードしてサイズを選択してください', uploading: '画像をアップロード中...', converting: 'ICOを変換中...', preparing: 'ダウンロードを準備中...', convertSuccess: '変換が成功しました！', invalidType: '無効なファイルタイプ', uploadTypeError: '{types} 形式の画像ファイルをアップロードしてください!', sizeTooLarge: '画像サイズは {size}MB を超えてはいけません!', newVersion: '新しいバージョンが検出されました。今すぐ再読み込みしますか？', tip: 'ヒント', later: '後で' },
-    lang: { zh: '中文', en: 'English', ja: '日本語' }
+    lang: { zh: '中国語', en: '英語', ja: '日本語' }
   }
 }
 

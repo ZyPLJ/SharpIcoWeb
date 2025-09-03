@@ -157,6 +157,15 @@ npm run dev
 
 ![image.png](https://raw.githubusercontent.com/ZyPLJ/note-gen-image-sync/main/2025-07/a2e8c67d-c95a-44f2-ad32-2259275c91db.png)
 
+### 1.5.0 版本
+
+该版本新增多语言国际化支持，支持中文、英文、日文界面切换，提升用户体验。
+
+![image.png](https://raw.githubusercontent.com/ZyPLJ/note-gen-image-sync/main/2025-09/Snipaste_2025-09-03_10-53-51.png)
+
+![image.png](https://raw.githubusercontent.com/ZyPLJ/note-gen-image-sync/main/2025-09/Snipaste_2025-09-03_10-54-18.png)
+
+
 ## 🛠 开发指南
 
 ### 项目结构

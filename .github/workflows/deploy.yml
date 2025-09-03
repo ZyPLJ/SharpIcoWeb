@@ -2,7 +2,8 @@ name: Deploy to Server
 
 on:
   push:
-    branches: [ master-zy ]
+    tags:
+      - "v*.*.*"  # 只有推送 v 开头的版本标签时才会触发
   workflow_dispatch:
     inputs:
       environment:
@@ -11,82 +12,84 @@ on:
         default: 'production'
         type: choice
         options:
-        - production
-        - staging
+          - production
+          - staging
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup SSH
-      uses: webfactory/ssh-agent@v0.8.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-        
-    - name: Add server to known hosts
-      run: |
-        ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
-        
-    - name: Create deployment package
-      run: |
-        # 创建临时目录用于打包
-        mkdir -p temp_deploy
-        
-        # 复制需要的文件到临时目录
-        cp -r sharp-ico-vue temp_deploy/ 2>/dev/null || true
-        cp -r SharpIcoWeb temp_deploy/ 2>/dev/null || true
-        cp -r SharpIco temp_deploy/ 2>/dev/null || true
-        cp compose.yaml temp_deploy/ 2>/dev/null || true
-        cp .dockerignore temp_deploy/ 2>/dev/null || true
-        cp SharpIco.sln temp_deploy/ 2>/dev/null || true
-        
-        # 排除构建文件
-        rm -rf temp_deploy/sharp-ico-vue/node_modules 2>/dev/null || true
-        rm -rf temp_deploy/sharp-ico-vue/dist 2>/dev/null || true
-        rm -rf temp_deploy/SharpIcoWeb/bin 2>/dev/null || true
-        rm -rf temp_deploy/SharpIcoWeb/obj 2>/dev/null || true
-        rm -rf temp_deploy/SharpIco/bin 2>/dev/null || true
-        rm -rf temp_deploy/SharpIco/obj 2>/dev/null || true
-        
-        # 创建部署包
-        cd temp_deploy
-        tar -czf ../deployment.tar.gz .
-        cd ..
-        
-        # 清理临时目录
-        rm -rf temp_deploy
-            
-    - name: Upload files to server
-      run: |
-        scp deployment.tar.gz ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:/www/wwwroot/default/sharp-ico/SharpIcoWeb
-        
-    - name: Deploy on server
-      run: |
-        ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} << 'EOF'
-          cd /www/wwwroot/default/sharp-ico/SharpIcoWeb
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 获取全部 Git 历史（如需打 Tag 必须设置）
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add server to known hosts
+        run: |
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Create deployment package
+        run: |
+          # 创建临时目录用于打包
+          mkdir -p temp_deploy
           
-          # 停止现有容器
-          docker-compose down
+          # 复制需要的文件到临时目录
+          cp -r sharp-ico-vue temp_deploy/ 2>/dev/null || true
+          cp -r SharpIcoWeb temp_deploy/ 2>/dev/null || true
+          cp -r SharpIco temp_deploy/ 2>/dev/null || true
+          cp compose.yaml temp_deploy/ 2>/dev/null || true
+          cp .dockerignore temp_deploy/ 2>/dev/null || true
+          cp SharpIco.sln temp_deploy/ 2>/dev/null || true
           
-          # 清理旧文件（保留部署包）
-          echo "清理旧文件..."
-          find . -mindepth 1 -maxdepth 1 ! -name 'deployment.tar.gz' -exec rm -rf {} +
+          # 排除构建文件
+          rm -rf temp_deploy/sharp-ico-vue/node_modules 2>/dev/null || true
+          rm -rf temp_deploy/sharp-ico-vue/dist 2>/dev/null || true
+          rm -rf temp_deploy/SharpIcoWeb/bin 2>/dev/null || true
+          rm -rf temp_deploy/SharpIcoWeb/obj 2>/dev/null || true
+          rm -rf temp_deploy/SharpIco/bin 2>/dev/null || true
+          rm -rf temp_deploy/SharpIco/obj 2>/dev/null || true
           
-          # 解压新的部署包
-          echo "解压新的部署包..."
-          tar -xzf deployment.tar.gz -C .
-      
+          # 创建部署包
+          cd temp_deploy
+          tar -czf ../deployment.tar.gz .
+          cd ..
           
-          # 构建并启动新容器
-          echo "构建并启动容器..."
-          docker-compose up -d --build
+          # 清理临时目录
+          rm -rf temp_deploy
+
+      - name: Upload files to server
+        run: |
+          scp deployment.tar.gz ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:/www/wwwroot/default/sharp-ico/SharpIcoWeb
+
+      - name: Deploy on server
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} << 'EOF'
+            cd /www/wwwroot/default/sharp-ico/SharpIcoWeb
           
-          # 清理部署包
-          rm -f deployment.tar.gz
+            # 停止现有容器
+            docker-compose down
           
-          echo "Deployment completed successfully!"
-        EOF
+            # 清理旧文件（保留部署包）
+            echo "清理旧文件..."
+            find . -mindepth 1 -maxdepth 1 ! -name 'deployment.tar.gz' -exec rm -rf {} +
+          
+            # 解压新的部署包
+            echo "解压新的部署包..."
+            tar -xzf deployment.tar.gz -C .
+          
+          
+            # 构建并启动新容器
+            echo "构建并启动容器..."
+            docker-compose up -d --build
+          
+            # 清理部署包
+            rm -f deployment.tar.gz
+          
+            echo "Deployment completed successfully!"
+          EOF
