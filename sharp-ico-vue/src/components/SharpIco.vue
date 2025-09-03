@@ -4,12 +4,12 @@
       <el-card class="main-card">
         <!-- 标题区域 -->
         <div class="header">
-          <h1>ICO 图标转换工具</h1>
-          <p class="subtitle">快速将您的图片转换多尺寸ICO图标格式</p>
+          <h1>{{ t('header.title') }}</h1>
+          <p class="subtitle">{{ t('header.subtitle') }}</p>
           <div class="feature-badges">
-            <el-tag type="success" size="small">免费使用</el-tag>
-            <el-tag type="info" size="small">无水印</el-tag>
-            <el-tag type="warning" size="small">多尺寸</el-tag>
+            <el-tag type="success" size="small">{{ t('header.free') }}</el-tag>
+            <el-tag type="info" size="small">{{ t('header.noWatermark') }}</el-tag>
+            <el-tag type="warning" size="small">{{ t('header.multiSize') }}</el-tag>
           </div>
         </div>
 
@@ -34,25 +34,25 @@
                   <Upload/>
                 </el-icon>
                 <div class="upload-text">
-                  <span>拖拽图片到此处或点击上传</span>
+                  <span>{{ t('upload.dragOrClick') }}</span>
                   <p class="upload-hint">
-                    支持 {{ formatSupportedTypes() }} 格式，最大 {{ maxFileSize }}MB
+                    {{ t('upload.hint', { types: formatSupportedTypes(), size: maxFileSize }) }}
                   </p>
                 </div>
               </el-upload>
               
               <!-- 快速操作 -->
               <div class="quick-actions" v-if="!imageUrl">
-                <p class="quick-title">快速开始：</p>
+                <p class="quick-title">{{ t('upload.quickStart') }}</p>
                 <el-button-group>
                   <el-button size="small" @click="setPresetSizes('standard')">
-                    标准尺寸
+                    {{ t('upload.preset.standard') }}
                   </el-button>
                   <el-button size="small" @click="setPresetSizes('web')">
-                    网页图标
+                    {{ t('upload.preset.web') }}
                   </el-button>
                   <el-button size="small" @click="setPresetSizes('app')">
-                    应用图标
+                    {{ t('upload.preset.app') }}
                   </el-button>
                 </el-button-group>
               </div>
@@ -60,15 +60,15 @@
 
             <!-- 转换设置 -->
             <div class="settings">
-              <h3>转换设置</h3>
+              <h3>{{ t('settings.title') }}</h3>
               <el-form label-position="top" :model="formData">
-                <el-form-item label="ICO图标尺寸" required>
+                <el-form-item :label="t('settings.icoSize')" required>
                   <el-select 
                     v-model="selectedSizes" 
                     multiple 
                     collapse-tags
                     collapse-tags-tooltip
-                    placeholder="选择需要的尺寸"
+                    :placeholder="t('settings.placeholder')"
                     style="width: 100%"
                   >
                     <el-option
@@ -89,11 +89,11 @@
                   <el-switch
                       v-model="isMultiSize"
                       class="mb-2"
-                      active-text="分别生成"
-                      inactive-text="合并生成"
+                      :active-text="t('settings.multiGenerateActive')"
+                      :inactive-text="t('settings.multiGenerateInactive')"
                   />
                   <el-tooltip
-                    content="合并生成：所有尺寸合并到一个ICO文件；分别生成：每个尺寸单独生成ICO文件并打包"
+                    :content="t('settings.mergeTip')"
                     placement="top"
                   >
                     <el-icon class="info-icon"><QuestionFilled /></el-icon>
@@ -102,8 +102,8 @@
                 
                 <!-- 高级选项 -->
                 <el-collapse v-model="activeCollapse" class="advanced-settings">
-                  <el-collapse-item title="高级选项" name="advanced">
-                    <el-form-item label="输出质量">
+                  <el-collapse-item :title="t('settings.advanced')" name="advanced">
+                    <el-form-item :label="t('settings.quality')">
                       <el-slider
                         v-model="outputQuality"
                         :min="0"
@@ -141,25 +141,25 @@
                 :loading="isConverting"
               >
                 <el-icon><Download/></el-icon>
-                {{ isConverting ? '转换中...' : '转换并下载ICO' }}
+                {{ isConverting ? t('actions.converting') : t('actions.convertAndDownload') }}
               </el-button>
               <el-button size="large" @click="resetForm">
                 <el-icon><RefreshRight/></el-icon>
-                重置
+                {{ t('common.reset') }}
               </el-button>
             </div>
             
             <!-- 转换统计 -->
             <div class="conversion-stats" v-if="conversionStats.total > 0">
               <el-statistic 
-                title="已转换图片" 
+                :title="t('stats.converted')" 
                 :value="conversionStats.total" 
-                suffix="张"
+                :suffix="t('stats.unit')"
               />
               <el-statistic 
-                title="今日转换" 
+                :title="t('stats.today')" 
                 :value="conversionStats.today" 
-                suffix="张"
+                :suffix="t('stats.unit')"
               />
             </div>
           </div>
@@ -171,24 +171,24 @@
         <template #header>
           <div class="help-header">
             <el-icon><QuestionFilled /></el-icon>
-            <span>使用说明</span>
+            <span>{{ t('help.title') }}</span>
           </div>
         </template>
         
         <el-steps :active="0" align-center>
           <el-step 
-            title="上传图片" 
-            description="支持PNG、JPG、JPEG格式，最大10MB"
+            :title="t('help.step1Title')" 
+            :description="t('help.step1Desc')"
             icon="Upload"
           />
           <el-step 
-            title="选择尺寸" 
-            description="根据需要选择一个或多个ICO尺寸"
+            :title="t('help.step2Title')" 
+            :description="t('help.step2Desc')"
             icon="Setting"
           />
           <el-step 
-            title="下载ICO" 
-            description="一键转换并下载生成的ICO文件"
+            :title="t('help.step3Title')" 
+            :description="t('help.step3Desc')"
             icon="Download"
           />
         </el-steps>
@@ -197,19 +197,19 @@
       <!-- 页脚 -->
       <footer class="footer">
         <div class="footer-content">
-          <p>© {{ new Date().getFullYear() }} ICO图标转换工具 | 便捷、高效的在线图标转换服务</p>
+          <p>{{ t('footer.copyright', { year: new Date().getFullYear() }) }}</p>
           <div class="footer-links">
-            <a href="../../ico.html" target="_blank" class="footer-link">关于我们</a>
+            <a href="../../ico.html" target="_blank" class="footer-link">{{ t('footer.about') }}</a>
             <span class="divider">|</span>
             <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank" rel="noopener noreferrer" class="footer-link">
               湘ICP备2024053728号
             </a>
           </div>
           <p>
-            <a href="https://afdian.com/a/pljzy" target="_blank" rel="noopener noreferrer">❤ 爱发电 | 赞助作者「ICO图标转换」</a>
+            <a href="https://afdian.com/a/pljzy" target="_blank" rel="noopener noreferrer">{{ t('footer.sponsor') }}</a>
           </p>
           <p>
-            作者网站：<a href="https://blog.pljzy.top" target="_blank" rel="noopener noreferrer">ZYBLog</a>
+            {{ t('footer.authorSite') }}<a href="https://blog.pljzy.top" target="_blank" rel="noopener noreferrer">ZYBLog</a>
           </p>
         </div>
       </footer>
@@ -243,6 +243,7 @@
 
 <script setup>
 import { computed, onMounted, ref, reactive, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Download, RefreshRight, Upload, QuestionFilled, StarFilled } from '@element-plus/icons-vue';
 import { dowloadFile, getImageInfo, uploadFile, uploadFileZip } from '@/http/modules/fileUpload';
 
@@ -252,6 +253,7 @@ import LoadingSpinner from './LoadingSpinner.vue';
 import ImagePreview from './ImagePreview.vue';
 import IcoInfoDisplay from './IcoInfoDisplay.vue';
 import ThemeToggle from "@/components/ThemeToggle.vue";
+const { t } = useI18n();
 
 // 响应式数据
 const imageUrl = ref('');
@@ -286,9 +288,9 @@ const conversionStats = reactive({
 
 // 质量标记
 const qualityMarks = reactive({
-  0: '最差',
-  50: '良好', 
-  100: '最佳'
+  0: t('settings.qualityMarks.worst'),
+  50: t('settings.qualityMarks.good'), 
+  100: t('settings.qualityMarks.best')
 });
 
 // 计算属性
@@ -303,17 +305,17 @@ const formatSupportedTypes = () => {
 
 const getSizeDescription = (size) => {
   const descriptions = {
-    16: '浏览器标签',
-    24: '小图标',
-    32: '标准图标',
-    48: '大图标',
-    64: '高清小图标',
-    128: '高清图标',
-    256: '超高清',
-    512: '极高清',
-    1024: '视网膜显示'
+    16: t('sizeDesc.16'),
+    24: t('sizeDesc.24'),
+    32: t('sizeDesc.32'),
+    48: t('sizeDesc.48'),
+    64: t('sizeDesc.64'),
+    128: t('sizeDesc.128'),
+    256: t('sizeDesc.256'),
+    512: t('sizeDesc.512'),
+    1024: t('sizeDesc.1024')
   };
-  return descriptions[size] || '自定义';
+  return descriptions[size] || t('common.custom');
 };
 
 const setPresetSizes = (preset) => {
@@ -323,7 +325,7 @@ const setPresetSizes = (preset) => {
     app: [32, 48, 64, 128, 256]
   };
   selectedSizes.value = presets[preset] || [];
-  ElMessage.success(`已应用${preset === 'standard' ? '标准' : preset === 'web' ? '网页' : '应用'}尺寸预设`);
+  ElMessage.success(`${t('upload.preset.' + (preset === 'standard' ? 'standard' : preset === 'web' ? 'web' : 'app'))}`);
 };
 
 const validateFile = (file) => {
@@ -331,12 +333,12 @@ const validateFile = (file) => {
   const isValidSize = file.size / 1024 / 1024 < maxFileSize.value;
   
   if (!isValidType) {
-    ElMessage.error(`请上传${formatSupportedTypes()}格式的图片文件!`);
+    ElMessage.error(t('messages.uploadTypeError', { types: formatSupportedTypes() }));
     return false;
   }
   
   if (!isValidSize) {
-    ElMessage.error(`图片大小不能超过 ${maxFileSize.value}MB!`);
+    ElMessage.error(t('messages.sizeTooLarge', { size: maxFileSize.value }));
     return false;
   }
   
@@ -373,7 +375,7 @@ const analyzeImageAndRecommendSizes = (file) => {
       
       if (smartRecommendation.length > 0) {
         selectedSizes.value = smartRecommendation;
-        ElMessage.success(`根据图片尺寸(${width}×${height})，已为您推荐合适的ICO尺寸`);
+        ElMessage.success(t('messages.recommend', { width, height }));
       }
     }
     
@@ -383,19 +385,19 @@ const analyzeImageAndRecommendSizes = (file) => {
 };
 
 const onSizeSelected = (size) => {
-  ElMessage.info(`选中尺寸: ${size}×${size}`);
+  ElMessage.info(`${size}×${size}`);
 };
 
 const convertToIco = async () => {
   if (!canConvert.value) {
-    ElMessage.warning('请先上传图片并选择尺寸');
+    ElMessage.warning(t('messages.pleaseUploadAndChoose'));
     return;
   }
 
   isConverting.value = true;
   showProgress.value = true;
   conversionProgress.value = 0;
-  loadingText.value = '正在上传图片...';
+  loadingText.value = t('messages.uploading');
 
   try {
     // 模拟进度更新
@@ -409,16 +411,16 @@ const convertToIco = async () => {
     
     clearInterval(progressInterval);
     conversionProgress.value = 100;
-    loadingText.value = '转换完成，开始下载...';
+    loadingText.value = t('messages.preparing');
     
     await new Promise(resolve => setTimeout(resolve, 500)); // 让用户看到完成状态
     
     handleDownload(result);
     updateConversionStats();
-    ElMessage.success('转换成功！');
+    ElMessage.success(t('messages.convertSuccess'));
     
   } catch (err) {
-    const errorMessage = err.response?.data?.message || err.message || '转换失败';
+    const errorMessage = err.response?.data?.message || err.message || t('common.fail');
     ElMessage.error(errorMessage);
     console.error('Conversion error:', err);
   } finally {
@@ -430,7 +432,7 @@ const convertToIco = async () => {
 };
 
 const processSingleSize = async () => {
-  loadingText.value = '正在转换ICO文件...';
+  loadingText.value = t('messages.converting');
   const response = await uploadFile(imageFile.value, selectedSizes.value);
 
   if (response.statusCode !== 200) {
@@ -444,7 +446,7 @@ const processSingleSize = async () => {
   const res = await dowloadFile(path);
 
   if (!res.headers['content-type']?.includes('image/x-icon')) {
-    throw new Error('无效的文件类型');
+    throw new Error(t('messages.invalidType'));
   }
 
   return {
@@ -455,7 +457,7 @@ const processSingleSize = async () => {
 };
 
 const processMultiSize = async () => {
-  loadingText.value = '正在生成多尺寸ICO文件...';
+  loadingText.value = t('messages.converting');
   icoFileInfo.value = null;
 
   const response = await uploadFileZip(imageFile.value, selectedSizes.value);
@@ -517,12 +519,12 @@ const resetForm = () => {
   isConverting.value = false;
   showProgress.value = false;
   
-  ElMessage.success('已重置所有设置');
+  ElMessage.success(t('actions.resetAll'));
 };
 
 const handleError = (errorInfo) => {
   console.error('Component error:', errorInfo);
-  ElMessage.error('组件出现错误，请刷新页面重试');
+  ElMessage.error(t('common.fail'));
 };
 
 // 生命周期
@@ -541,7 +543,7 @@ onMounted(() => {
 // 监听器
 watch(selectedSizes, (newSizes) => {
   if (newSizes.length === 0) {
-    ElMessage.warning('请至少选择一个ICO尺寸');
+    ElMessage.warning(t('messages.selectAtLeastOne'));
   }
 }, { deep: true });
 </script>

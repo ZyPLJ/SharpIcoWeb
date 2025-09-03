@@ -5,9 +5,9 @@
         <template #title>
           <div class="info-header">
             <el-icon><InfoFilled /></el-icon>
-            <span>ICO文件信息</span>
+            <span>{{ t('icoInfo.title') }}</span>
             <el-tag size="small" class="image-count-tag">
-              {{ icoInfo.imageCount }}个图像
+              {{ t('icoInfo.imageCount', { count: icoInfo.imageCount }) }}
             </el-tag>
           </div>
         </template>
@@ -15,7 +15,7 @@
         <div class="ico-info-content">
           <div class="file-header">
             <el-icon><Document /></el-icon>
-            <span>正在检查ICO文件信息</span>
+            <span>{{ t('icoInfo.checking') }}</span>
           </div>
 
           <el-scrollbar height="420px" class="custom-scrollbar">
@@ -27,7 +27,7 @@
                   :class="{ 'has-warning': img.warning }"
               >
                 <div class="image-info-header">
-                  <span class="image-number">第{{ index + 1 }}张图像</span>
+                  <span class="image-number">{{ t('icoInfo.imageNumber', { num: index + 1 }) }}</span>
                   <el-tag size="small" :type="getTagType(img)" class="dimension-tag">
                     {{ img.width }}x{{ img.height }}
                   </el-tag>
@@ -35,15 +35,15 @@
 
                 <div class="image-details">
                   <div class="detail-item">
-                    <span class="label">色深:</span>
+                    <span class="label">{{ t('icoInfo.depth') }}</span>
                     <span class="value">{{ img.bpp }}bpp</span>
                   </div>
                   <div class="detail-item">
-                    <span class="label">大小:</span>
+                    <span class="label">{{ t('icoInfo.size') }}</span>
                     <span class="value">{{ formatBytes(img.size) }}</span>
                   </div>
                   <div class="detail-item">
-                    <span class="label">偏移:</span>
+                    <span class="label">{{ t('icoInfo.offset') }}</span>
                     <span class="value">{{ img.offset }}</span>
                   </div>
                 </div>
@@ -64,6 +64,7 @@
 <script setup>
 import { ref } from 'vue';
 import { InfoFilled, Document, Warning } from '@element-plus/icons-vue';
+import { useI18n } from 'vue-i18n';
 
 // 这里假设icoInfo会通过props传入
 // 实际使用时替换为您的数据源
@@ -75,6 +76,7 @@ const props = defineProps({
 });
 
 const activeNames = ref(['1']);
+const { t } = useI18n();
 
 // 根据尺寸确定标签类型
 const getTagType = (img) => {

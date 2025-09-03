@@ -1,16 +1,19 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useDark, usePreferredDark } from '@vueuse/core'
 import SharpIco from './components/SharpIco.vue'
 import ThemeToggle from './components/ThemeToggle.vue'
+import LanguageSwitcher from './components/LanguageSwitcher.vue'
 import ErrorBoundary from './components/ErrorBoundary.vue'
-import { VERSION, notifications } from '../notifications.js'
+import { VERSION, buildNotifications } from '../notifications.js'
 import {ElMessageBox, ElNotification} from 'element-plus';
 
 const isDark = useDark()
 const isSystemDarkMode = usePreferredDark()
 const isLoading = ref(true)
 const isDev = import.meta.env.DEV
+const { t } = useI18n()
 
 // 应用初始化
 const initializeApp = async () => {
@@ -43,7 +46,7 @@ const initializeTheme = () => {
 
 // 检查版本更新
 const checkVersionUpdate = () => {
-  ElNotification(notifications.welcome)
+  ElNotification(buildNotifications(t).welcome)
   const lastVersion = localStorage.getItem('app_version')
 
   if (lastVersion !== VERSION) {
@@ -58,12 +61,12 @@ const checkVersionUpdate = () => {
 
 // 更新提示函数
 const showUpdateNotification = () => {
-  ElMessageBox.confirm('检测到新版本，点击按钮更新页面？', '提示', {
-    cancelButtonText: '稍后',
+  ElMessageBox.confirm(t('messages.newVersion'), t('messages.tip'), {
+    cancelButtonText: t('messages.later'),
     type: 'warning',
     showClose: false,
     showCancelButton: false,
-    confirmButtonText: '更新'
+    confirmButtonText: t('common.update')
   }).then(() => { 
     window.location.reload() 
   }).catch(() => {
@@ -121,8 +124,8 @@ onUnmounted(() => {
           <div class="logo-ring"></div>
           <div class="logo-icon">ICO</div>
         </div>
-        <h1>Sharp ICO</h1>
-        <p>正在加载应用...</p>
+        <h1>{{ $t('app.name') }}</h1>
+        <p>{{ $t('app.loading') }}</p>
       </div>
     </div>
     
@@ -138,14 +141,15 @@ onUnmounted(() => {
       <!-- 快捷键提示（开发环境） -->
       <div v-if="isDev" class="dev-shortcuts">
         <details>
-          <summary>快捷键</summary>
+          <summary>{{ $t('dev.shortcuts') }}</summary>
           <ul>
-            <li><kbd>Ctrl</kbd> + <kbd>K</kbd> - 聚焦上传区域</li>
-            <li><kbd>Ctrl</kbd> + <kbd>D</kbd> - 切换主题</li>
+            <li><kbd>Ctrl</kbd> + <kbd>K</kbd> - {{ $t('dev.focusUpload') }}</li>
+            <li><kbd>Ctrl</kbd> + <kbd>D</kbd> - {{ $t('dev.toggleTheme') }}</li>
           </ul>
         </details>
       </div>
     </template>
+    <LanguageSwitcher />
   </div>
 </template>
 
