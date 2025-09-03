@@ -56,6 +56,17 @@
       @keyframes spin {
           to { transform: rotate(360deg); }
       }
+      .visually-hidden {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border: 0;
+      }
     </style>
   </head>
   <body>
@@ -87,6 +98,7 @@
     
     <!-- 主应用容器 -->
     <div id="app">
+      <h1 class="visually-hidden">Sharp ICO - 免费无广的图片转ICO工具</h1>
       <!-- 初始加载骨架屏 -->
       <div id="app-loading" style="
         position: fixed;
